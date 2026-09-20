@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Instagram Mini App</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <h1>Instagram</h1>
+
+        <nav aria-label="Primary navigation">
+            <a href="#">Home</a>
+            <div class="account-controls">
+                <a href="#profile" class="profile-link" aria-label="View profile">
+                    <span class="account-avatar" aria-hidden="true">I</span>
+                </a>
+                <button class="settings-button" type="button" aria-label="User settings" title="User settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        aria-hidden="true">
+                        <line x1="4" y1="7" x2="20" y2="7"></line>
+                        <circle cx="9" cy="7" r="2"></circle>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <circle cx="15" cy="12" r="2"></circle>
+                        <line x1="4" y1="17" x2="20" y2="17"></line>
+                        <circle cx="7" cy="17" r="2"></circle>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container">
+        <section class="profile" id="profile" aria-labelledby="profile-heading" data-current-username="instagram_user">
+            <div class="profile-image" aria-hidden="true">
+                <span>I</span>
+            </div>
+
+            <div class="profile-info">
+                <h2 id="profile-heading">Instagram User</h2>
+                <p>@instagram_user</p>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section class="users-section" aria-labelledby="users-heading">
+            <h2 id="users-heading">Users</h2>
+
+            <div id="users-container" class="users-container" aria-live="polite">
+                <p class="loading-message">Loading users...</p>
+            </div>
+        </section>
+
+
+        <!-- Create Post Section -->
+        <section class="create-post">
+
+            <h2>Create a Post</h2>
+
+            <form id="post-form">
+
+                <input type="text" id="post-content" placeholder="What's on your mind?" required>
+
+                <button type="submit">
+                    Post
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Posts Section -->
+        <section class="posts">
+
+            <h2>Posts</h2>
+
+            <!-- JavaScript will add posts here -->
+            <div id="posts-container">
+
+                <p id="loading-message">
+                    Posts will appear here...
+                </p>
+
+            </div>
+
+        </section>
+        <!-- Comments Section -->
+        <section class="comments-section">
+
+            <h2>Comments</h2>
+
+            <form id="comment-form">
+                <select id="comment-post" required>
+                    <option value="">Select a post</option>
+                </select>
+                <input type="text" id="comment-content" placeholder="Write a comment..." required>
+
+                <button type="submit">
+                    Comment
+                </button>
+
+            </form>
+
+            <div id="comments-container">
+                <p id="comments-loading-message">
+                    Comments will appear here...
+                </p>
+            </div>
+
+        </section>
+    </main>
+
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="script.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/users.js"></script>
+    <script src="js/comments.js"></script>
+
+</body>
+
+</html>

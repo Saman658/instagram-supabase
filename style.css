@@ -1,0 +1,425 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    color: #222;
+}
+
+/* Navbar */
+.navbar {
+    height: 60px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    position: sticky;
+    top: 0;
+}
+
+.navbar h1 {
+    font-size: 24px;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #222;
+    font-weight: bold;
+}
+
+.account-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-link {
+    display: inline-flex;
+}
+
+.account-avatar,
+.profile-image {
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.account-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+}
+
+.settings-button {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background-color: white;
+    color: #222;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-button:hover {
+    background-color: #fafafa;
+}
+
+.settings-button svg {
+    width: 19px;
+    height: 19px;
+}
+
+
+/* Main Container */
+.container {
+    width: 600px;
+    max-width: 95%;
+    margin: 30px auto;
+}
+
+
+/* Users */
+.users-section {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.users-section h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    padding: 16px 18px 10px;
+}
+
+.users-container {
+    border-top: 1px solid #dbdbdb;
+    display: flex;
+    flex-direction: column;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 10px 18px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.user:last-child {
+    border-bottom: 0;
+}
+
+.user-avatar {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.user-avatar-fallback {
+    color: #262626;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.user-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-display-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.user-username {
+    display: block;
+    margin-top: 2px;
+    overflow: hidden;
+    color: #737373;
+    font-size: 12px;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.users-message {
+    margin: 0;
+    padding: 12px 18px;
+    color: #737373;
+    font-size: 14px;
+}
+
+
+/* Profile */
+.profile {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-image {
+    width: 56px;
+    height: 56px;
+    flex: 0 0 56px;
+    font-size: 22px;
+}
+
+.profile-info h2 {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.profile-info p {
+    color: #777;
+    font-size: 13px;
+}
+
+
+/* Create Post */
+.create-post {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.create-post h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+#post-form {
+    display: flex;
+    gap: 10px;
+}
+
+#post-content {
+    flex: 1;
+    padding: 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    font-size: 14px;
+}
+
+#post-form button {
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #222;
+    color: white;
+
+    cursor: pointer;
+}
+
+#post-form button:hover {
+    opacity: 0.8;
+}
+
+
+/* Posts */
+.posts {
+    margin-top: 20px;
+}
+
+.posts > h2 {
+    margin-bottom: 15px;
+}
+
+
+/* Individual Post */
+.post {
+    background-color: white;
+    border: 1px solid #ddd;
+
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+.post-user {
+    font-weight: bold;
+}
+
+.post-content {
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.post-content > img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.post-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.post-actions button {
+    border: none;
+    background: none;
+
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+/* Comments */
+.comment {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+
+.comment strong {
+    font-size: 13px;
+    color: #222;
+}
+
+.comment p {
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #222;
+}
+
+.comment small {
+    display: block;
+    margin-top: 6px;
+    color: #737373;
+    font-size: 11px;
+}
+
+.comment br {
+    display: none;
+}
+
+
+/* Loading Message */
+#loading-message {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .navbar {
+        height: 56px;
+        padding: 0 15px;
+    }
+
+    .navbar h1 {
+        font-size: 20px;
+    }
+
+    .navbar nav {
+        gap: 10px;
+    }
+
+    .account-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+
+    .settings-button {
+        width: 34px;
+        height: 34px;
+    }
+
+    .container {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .profile {
+        padding: 14px 16px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+    }
+
+    .profile-image {
+        width: 52px;
+        height: 52px;
+        flex-basis: 52px;
+    }
+
+    #post-form {
+        flex-direction: column;
+    }
+
+    #post-form button {
+        width: 100%;
+    }
+}
