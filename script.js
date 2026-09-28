@@ -1,34 +1,31 @@
-console.log("JavaScript is connected successfully!");
+// Main application initialization
+console.log("Instagram Mini App initialized");
 
-async function testSmartProcessor() {
-    const { data: sessionData, error: sessionError } =
-        await window.supabaseClient.auth.getSession();
+let dataLoaded = false;
 
-    if (sessionError) {
-        console.error("Session Error:", sessionError);
-        return;
+async function loadAppData() {
+    if (dataLoaded) return;
+    dataLoaded = true;
+
+    if (window.loadUsers) {
+        await window.loadUsers();
     }
-
-    if (!sessionData.session) {
-        console.error("No logged-in Supabase session found.");
-        return;
+    if (window.loadPosts) {
+        await window.loadPosts();
     }
-
-    const { data, error } =
-        await window.supabaseClient.functions.invoke("smart-processor", {
-            headers: {
-                Authorization: `Bearer ${sessionData.session.access_token}`
-            }
-        });
-
-    if (error) {
-        console.error("Smart Processor Error:", error);
-        return;
-    }
-
-    console.log("Smart Processor Response:", data);
 }
 
-console.log("Smart Processor test code loaded");
+window.addEventListener("DOMContentLoaded", async () => {
+    if (!window.authAPI) return;
 
-testSmartProcessor();
+    window.authAPI.initAuthStateChange();
+    await window.authAPI.updateAuthUI();
+    await loadAppData();
+});
+
+window.addEventListener("authStateReady", async () => {
+    if (await window.authAPI?.isLoggedIn()) {
+        dataLoaded = false;
+        await loadAppData();
+    }
+});

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile - Instagram Mini App</title>
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <h1>Instagram</h1>
+
+        <nav aria-label="Primary navigation">
+            <a href="../index.html">Home</a>
+                <div class="account-controls">
+                    <a href="#profile" class="profile-link" id="profile-link" aria-label="View profile">
+                        <span class="account-avatar" aria-hidden="true">I</span>
+                    </a>
+                    <div id="auth-area" class="auth-area"></div>
+                    <button class="settings-button" type="button" aria-label="User settings" title="User settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                            aria-hidden="true">
+                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                            <circle cx="9" cy="7" r="2"></circle>
+                            <line x1="4" y1="12" x2="20" y2="12"></line>
+                            <circle cx="15" cy="12" r="2"></circle>
+                            <line x1="4" y1="17" x2="20" y2="17"></line>
+                            <circle cx="7" cy="17" r="2"></circle>
+                        </svg>
+                    </button>
+                </div>
+        </nav>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Profile Header -->
+        <section class="profile-header" id="profile-header" aria-labelledby="profile-username">
+            <div class="profile-header-image" aria-hidden="true">
+                <span class="profile-header-placeholder">I</span>
+            </div>
+
+            <div class="profile-header-info">
+                <h2 id="profile-username">Loading...</h2>
+                <p id="profile-display-name"></p>
+                <p id="profile-bio" class="profile-bio"></p>
+                <div class="profile-stats" id="profile-stats">
+                    <span><strong id="posts-count">0</strong> posts</span>
+                    <span><strong id="followers-count">0</strong> followers</span>
+                    <span><strong id="following-count">0</strong> following</span>
+                </div>
+                <div class="profile-actions" id="profile-actions">
+                    <!-- Follow/Unfollow button will be inserted here for other users' profiles -->
+                </div>
+            </div>
+        </section>
+
+        <!-- User's Posts -->
+        <section class="profile-posts" aria-labelledby="user-posts-heading">
+            <h2 id="user-posts-heading">Posts</h2>
+            <div id="profile-posts-container" class="posts-container">
+                <p class="loading-message">Loading posts...</p>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/profile.js"></script>
+
+</body>
+
+</html>

@@ -18,36 +18,37 @@
 
         <nav aria-label="Primary navigation">
             <a href="#">Home</a>
-            <div class="account-controls">
-                <a href="#profile" class="profile-link" aria-label="View profile">
-                    <span class="account-avatar" aria-hidden="true">I</span>
-                </a>
-                <button class="settings-button" type="button" aria-label="User settings" title="User settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                        aria-hidden="true">
-                        <line x1="4" y1="7" x2="20" y2="7"></line>
-                        <circle cx="9" cy="7" r="2"></circle>
-                        <line x1="4" y1="12" x2="20" y2="12"></line>
-                        <circle cx="15" cy="12" r="2"></circle>
-                        <line x1="4" y1="17" x2="20" y2="17"></line>
-                        <circle cx="7" cy="17" r="2"></circle>
-                    </svg>
-                </button>
-            </div>
+                <div class="account-controls">
+                    <a href="#profile" class="profile-link" id="profile-link" aria-label="View profile">
+                        <span class="account-avatar" aria-hidden="true">I</span>
+                    </a>
+                    <div id="auth-area" class="auth-area"></div>
+                    <button class="settings-button" type="button" aria-label="User settings" title="User settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                            aria-hidden="true">
+                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                            <circle cx="9" cy="7" r="2"></circle>
+                            <line x1="4" y1="12" x2="20" y2="12"></line>
+                            <circle cx="15" cy="12" r="2"></circle>
+                            <line x1="4" y1="17" x2="20" y2="17"></line>
+                            <circle cx="7" cy="17" r="2"></circle>
+                        </svg>
+                    </button>
+                </div>
         </nav>
     </header>
 
 
     <!-- Main Content -->
     <main class="container">
-        <section class="profile" id="profile" aria-labelledby="profile-heading" data-current-username="instagram_user">
+        <section class="profile" id="profile" aria-labelledby="profile-heading" data-current-username="">
             <div class="profile-image" aria-hidden="true">
                 <span>I</span>
             </div>
 
             <div class="profile-info">
-                <h2 id="profile-heading">Instagram User</h2>
-                <p>@instagram_user</p>
+                <h2 id="profile-heading">Welcome</h2>
+                <p>Sign in to view your profile</p>
             </div>
         </section>
 
@@ -94,40 +95,17 @@
             </div>
 
         </section>
-        <!-- Comments Section -->
-        <section class="comments-section">
-
-            <h2>Comments</h2>
-
-            <form id="comment-form">
-                <select id="comment-post" required>
-                    <option value="">Select a post</option>
-                </select>
-                <input type="text" id="comment-content" placeholder="Write a comment..." required>
-
-                <button type="submit">
-                    Comment
-                </button>
-
-            </form>
-
-            <div id="comments-container">
-                <p id="comments-loading-message">
-                    Comments will appear here...
-                </p>
-            </div>
-
-        </section>
     </main>
 
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
     <script src="script.js"></script>
+    <script src="js/comments.js"></script>
     <script src="js/posts.js"></script>
     <script src="js/users.js"></script>
-    <script src="js/comments.js"></script>
 
 </body>
 

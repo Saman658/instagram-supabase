@@ -1,81 +1,71 @@
-async function loadComments() {
-    const commentsContainer = document.getElementById("comments-container");
+async function getSupabaseClient() {
+    return window.supabaseClient;
+}
 
-    if (!commentsContainer) {
+async function fetchCommentsForPost(client, postId) {
+    const { data: comments, error } = await client
+        .from("comments")
+        .select("id, post_id, user_id, comment_text, created_at")
+        .eq("post_id", postId)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Comments error:", error);
+        return { comments: null, error };
+    }
+    return { comments: comments || [], error: null };
+}
+
+async function fetchUserMap(client, userIds) {
+    const uniqueIds = [...new Set((userIds || []).filter(Boolean))];
+    if (uniqueIds.length === 0) return {};
+
+    const { data: users, error } = await client
+        .from("users")
+        .select("id, username")
+        .in("id", uniqueIds);
+
+    if (error) {
+        console.error("Users error:", error);
+        return {};
+    }
+
+    const map = {};
+    (users || []).forEach((user) => {
+        map[user.id] = user.username;
+    });
+    return map;
+}
+
+async function loadCommentsForPost(postId, container) {
+    if (!container) return;
+
+    const client = await getSupabaseClient();
+    if (!client) {
+        container.innerHTML = "<p>Supabase connection is not available.</p>";
         return;
     }
 
-    if (!window.supabaseClient) {
-        console.error("Supabase client not found.");
-        commentsContainer.innerHTML =
-            "<p>Supabase connection is not available.</p>";
-        return;
-    }
-
-    const { data: comments, error: commentsError } =
-        await window.supabaseClient
-            .from("comments")
-            .select("id, post_id, user_id, comment_text, created_at")
-            .order("created_at", { ascending: false });
-
-    if (commentsError) {
-        console.error("Comments error:", commentsError);
-        commentsContainer.innerHTML =
-            "<p>Unable to load comments.</p>";
+    const { comments, error } = await fetchCommentsForPost(client, postId);
+    if (error) {
+        container.innerHTML = "<p>Unable to load comments.</p>";
         return;
     }
 
     if (!comments || comments.length === 0) {
-        commentsContainer.innerHTML =
-            "<p>No comments yet.</p>";
+        container.innerHTML = "<p>No comments yet.</p>";
         return;
     }
 
-    const { data: posts, error: postsError } =
-        await window.supabaseClient
-            .from("posts")
-            .select("id, caption");
+    const userMap = await fetchUserMap(client, comments.map((c) => c.user_id));
 
-    if (postsError) {
-        console.error("Posts error:", postsError);
-        commentsContainer.innerHTML =
-            "<p>Unable to load posts.</p>";
-        return;
-    }
-
-    const { data: users, error: usersError } =
-        await window.supabaseClient
-            .from("users")
-            .select("id, username");
-
-    if (usersError) {
-        console.error("Users error:", usersError);
-        commentsContainer.innerHTML =
-            "<p>Unable to load comment users.</p>";
-        return;
-    }
-
-    const postMap = {};
-    posts.forEach((post) => {
-        postMap[post.id] = post.caption || "Untitled post";
-    });
-
-    const userMap = {};
-    users.forEach((user) => {
-        userMap[user.id] = user.username;
-    });
-
-    commentsContainer.innerHTML = "";
+    container.innerHTML = "";
 
     comments.forEach((comment) => {
         const username = userMap[comment.user_id] || "Unknown User";
-        const postCaption = postMap[comment.post_id] || "Unknown Post";
 
         const commentElement = document.createElement("div");
-        commentElement.classList.add("comment");
-
-        const postElement = document.createElement("strong");
-        postElement.textContent = postCaption;
+        commentElement.className = "comment";
 
         const userElement = document.createElement("strong");
         userElement.textContent = username;
@@ -86,96 +76,72 @@ async function loadComments() {
         const dateElement = document.createElement("small");
         dateElement.textContent = comment.created_at || "";
 
-        commentElement.appendChild(postElement);
-        commentElement.appendChild(document.createElement("br"));
-        commentElement.appendChild(userElement);
-        commentElement.appendChild(textElement);
-        commentElement.appendChild(dateElement);
-
-        commentsContainer.appendChild(commentElement);
+        commentElement.append(userElement, textElement, dateElement);
+        container.appendChild(commentElement);
     });
 }
 
+function attachCommentFormHandlers() {
+    const forms = document.querySelectorAll(".comment-form");
+    forms.forEach((form) => {
+        if (form.dataset.bound === "true") return;
+        form.dataset.bound = "true";
 
-loadComments();
-async function loadCommentPosts() {
-    const postSelect = document.getElementById("comment-post");
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
-    if (!postSelect) {
-        return;
-    }
+            const postId = form.dataset.postId;
+            const input = form.querySelector(".comment-input");
+            const commentText = (input?.value || "").trim();
 
-    const { data: posts, error } = await window.supabaseClient
-        .from("posts")
-        .select("id, caption, created_at")
-        .order("created_at", { ascending: false });
+            if (!postId || !commentText) return;
 
-    if (error) {
-        console.error("Comment posts error:", error);
-        return;
-    }
+            const client = await getSupabaseClient();
+            if (!client) {
+                alert("Supabase connection is not available.");
+                return;
+            }
 
-    posts.forEach((post) => {
-        const option = document.createElement("option");
+            const currentUser = await window.authAPI?.getCurrentUser();
+            if (!currentUser?.id) {
+                alert("Please log in to comment.");
+                return;
+            }
 
-        option.value = post.id;
-        option.textContent = post.caption || "Untitled post";
-
-        postSelect.appendChild(option);
-    });
-}
-
-loadCommentPosts();
-const commentForm = document.getElementById("comment-form");
-
-if (commentForm) {
-    commentForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const postSelect = document.getElementById("comment-post");
-        const commentInput = document.getElementById("comment-content");
-
-        const postId = postSelect.value;
-        const commentText = commentInput.value.trim();
-
-        if (!postId || !commentText) {
-            return;
-        }
-
-        // Get current user
-        const { data: user, error: userError } =
-            await window.supabaseClient
-                .from("users")
-                .select("id")
-                .eq("username", "sehrish")
-                .single();
-
-        if (userError || !user) {
-            console.error("Comment user error:", userError);
-            alert("Could not find user.");
-            return;
-        }
-
-        // Insert comment
-        const { error: insertError } =
-            await window.supabaseClient
+            const { error: insertError } = await client
                 .from("comments")
                 .insert({
                     post_id: postId,
-                    user_id: user.id,
+                    user_id: currentUser.id,
                     comment_text: commentText
                 });
 
-        if (insertError) {
-            console.error("Comment insert error:", insertError);
-            alert(insertError.message);
-            return;
-        }
+            if (insertError) {
+                console.error("Comment insert error:", insertError);
+                alert(insertError.message);
+                return;
+            }
 
-        // Clear input
-        commentInput.value = "";
+            if (input) input.value = "";
 
-        // Reload comments
-        await loadComments();
+            const container = form.parentElement.querySelector(".comments-container");
+            if (container) {
+                await loadCommentsForPost(postId, container);
+            }
+        });
     });
 }
+
+// Kept for backward compatibility; comments now render per-post under each post.
+async function loadComments() {
+    // No-op: the global Comments section was removed.
+}
+
+async function loadCommentPosts() {
+    // No-op: the post picker is no longer used.
+}
+
+window.loadComments = loadComments;
+window.loadCommentPosts = loadCommentPosts;
+window.loadCommentsForPost = loadCommentsForPost;
+window.attachCommentFormHandlers = attachCommentFormHandlers;
